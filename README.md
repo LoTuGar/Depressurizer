@@ -51,6 +51,7 @@ Once Steam is closed, all you need to do is click on File > Save in Depressurize
 
 By default, Depressurizer will automatically load and update your profile the next time you launch the program.
 
+<!--
 ## Depressurizer (Premium) API 🚀 
 To resolve issues such as #194 (Internal server error due to scraping speed) and #189 ([REQUEST] Use Steam Database for removed games) a Depressurizer API was built. To get access you have to become a [GitHub sponsor](https://github.com/sponsors/LoTuGar).
 
@@ -60,7 +61,6 @@ To resolve issues such as #194 (Internal server error due to scraping speed) and
 * The API is subject to fair usage, you can use it outside Depressurizer;
 * Improved data for removed games / software / apps.
 
-<!--
 ### Configuration
 * Include your [steamID64](https://steamid.io/) in your GitHub profile description for verification.
 * Send an email to [LoTuGar](mailto:depressurizer@martijnvegter.com) containing your:
