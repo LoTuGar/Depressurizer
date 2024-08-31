@@ -1,9 +1,9 @@
 # Depressurizer
-[![Github All Releases](https://img.shields.io/github/downloads/Depressurizer/Depressurizer/total.svg?style=flat-square)](https://github.com/mvegter/Depressurizer/releases/latest)
-[![GitHub stars](https://img.shields.io/github/stars/Depressurizer/Depressurizer.svg?style=flat-square)](https://github.com/mvegter/Depressurizer/stargazers)
-[![GitHub contributors](https://img.shields.io/github/contributors/Depressurizer/Depressurizer.svg?style=flat-square)](https://github.com/mvegter/Depressurizer/graphs/contributors)
-[![GitHub issues](https://img.shields.io/github/issues/Depressurizer/Depressurizer.svg?style=flat-square)](https://github.com/mvegter/Depressurizer/issues)
-[![GitHub license](https://img.shields.io/github/license/Depressurizer/Depressurizer.svg?style=flat-square)](https://github.com/mvegter/Depressurizer/blob/dev/LICENSE)
+[![Github All Releases](https://img.shields.io/github/downloads/Depressurizer/Depressurizer/total.svg?style=flat-square)](https://github.com/LoTuGar/Depressurizer/releases/latest)
+[![GitHub stars](https://img.shields.io/github/stars/Depressurizer/Depressurizer.svg?style=flat-square)](https://github.com/LoTuGar/Depressurizer/stargazers)
+[![GitHub contributors](https://img.shields.io/github/contributors/Depressurizer/Depressurizer.svg?style=flat-square)](https://github.com/LoTuGar/Depressurizer/graphs/contributors)
+[![GitHub issues](https://img.shields.io/github/issues/Depressurizer/Depressurizer.svg?style=flat-square)](https://github.com/LoTuGar/Depressurizer/issues)
+[![GitHub license](https://img.shields.io/github/license/Depressurizer/Depressurizer.svg?style=flat-square)](https://github.com/LoTuGar/Depressurizer/blob/dev/LICENSE)
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/Depressurizer/Depressurizer/.NET%20Core%20Desktop/master?style=flat-square)
 
 <sup>This is a continuation of [rallion](https://github.com/rallion)'s [Depressurizer](https://github.com/rallion/depressurizer).</sup>
@@ -26,7 +26,7 @@ It also saves your configuration information independently of Steam, providing a
 
 ## Requirements
 
- - Depressurizer requires the [.NET Framework 4.8](https://dotnet.microsoft.com/download/dotnet-framework/net48).
+ - Depressurizer requires [.NET 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
 
  - It must be run on the same computer on which you use Steam, or one one of the computers on which you use Steam.
 
@@ -51,7 +51,7 @@ Once Steam is closed, all you need to do is click on File > Save in Depressurize
 By default, Depressurizer will automatically load and update your profile the next time you launch the program.
 
 ## Depressurizer (Premium) API 🚀 
-To resolve issues such as #194 (Internal server error due to scraping speed) and #189 ([REQUEST] Use Steam Database for removed games) a Depressurizer API was built. To get access you have to become a [GitHub sponsor](https://github.com/sponsors/mvegter).
+To resolve issues such as #194 (Internal server error due to scraping speed) and #189 ([REQUEST] Use Steam Database for removed games) a Depressurizer API was built. To get access you have to become a [GitHub sponsor](https://github.com/sponsors/LoTuGar).
 
 ### Advantages
 * When the Steam Store page format changes you will not have to wait for a new Depressurizer release. The Depressurizer (Premium) API will take care of the new format without you having to take action;
@@ -61,7 +61,7 @@ To resolve issues such as #194 (Internal server error due to scraping speed) and
 
 ### Configuration
 * Include your [steamID64](https://steamid.io/) in your GitHub profile description for verification.
-* Send an email to [mvegter](mailto:depressurizer@martijnvegter.com) containing your:
+* Send an email to [LoTuGar](mailto:depressurizer@martijnvegter.com) containing your:
     * SteamID 64
     * Steam Web API Key
     * GitHub username
@@ -167,7 +167,7 @@ There are currently nine types of AutoCat:
 
  - **User Score:** This lets you categorize games based on user recommendations on the Steam store. To use this method, you must create a set of categories to assign, and define the criteria for a game to be placed in that category. Each game will only be assigned to the category for the first rule that matches it. If a game does not match any rules, it will not be assigned to a category.
 
- - **HLTB:** This lets you categorize games based on the times from http://howlongtobeat.com/ which indicate how long it takes to beat a game. To use this method, you must create a set of categories to assign, and define the criteria for a game to be placed in that category. Each game will only be assigned to the category for the first rule that matches it. If a game does not match any rules, it will not be assigned to a category.
+ - **HLTB:** This lets you categorize games based on the times from http://howlongtobeat.com/ which indicate how long it takes to beat a game. To use this method, you must create a set of categories to assign, and define the criteria for a game to be placed in that category. Each game will only be assigned to the category for the first rule that matches it. If a game does not match any rules, it will not be assigned to a category.  HLTB is not automatically scraped, you must first open the database editor and select games, then press Update from HLTB.
 
  - **DevPub:** Categorize games based on their Developers and/or Publishers.
 

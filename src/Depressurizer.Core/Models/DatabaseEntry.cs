@@ -966,12 +966,17 @@ namespace Depressurizer.Core.Models
 
             if(HLTBId != 0)
             {
+                /*TODO: Replace this with alternative API lookup? There's a fan made one hosted on Glitch https://hltb-fanmadeapi.glitch.me/HLTBDetail?detail=2224
+                        Ideally, both the search and the detail call would be replaced with an actual API call instead of using webrequests and HTML parsing
+                */
                 result = service.Detail(HLTBId.ToString()).GetAwaiter().GetResult();
             }
             else
             {
+                //TODO: Use a better name matching search
                 var possibleGameMatches = service.Search(RemoveSpecialCharacters(Name)).GetAwaiter().GetResult();
 
+                //TODO: Figure out if the first returned game is always correct
                 if(possibleGameMatches.Count > 0)
                 {
                     result = possibleGameMatches[0];
