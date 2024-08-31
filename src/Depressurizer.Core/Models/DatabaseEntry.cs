@@ -1,9 +1,12 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Net.Http.Json;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Depressurizer.Core.Enums;
 using Depressurizer.Core.Helpers;
 using JetBrains.Annotations;
@@ -109,6 +112,11 @@ namespace Depressurizer.Core.Models
         public int AppId { get; set; }
 
         /// <summary>
+        ///     How Long To Beat Game ID.
+        /// </summary>
+        public int HLTBId { get; set; } = 0;
+
+        /// <summary>
         ///     Type of this application.
         /// </summary>
         public AppType AppType { get; set; } = AppType.Unknown;
@@ -182,6 +190,11 @@ namespace Depressurizer.Core.Models
         ///     Unix-timestamp of last store scrape.
         /// </summary>
         public long LastStoreScrape { get; set; }
+
+        /// <summary>
+        ///     Unix-timestamp of last HLTB scrape.
+        /// </summary>
+        public long LastHLTBScrape { get; set; }
 
         /// <summary>
         ///     URL to the Metacritic page of this application.
@@ -473,6 +486,22 @@ namespace Depressurizer.Core.Models
             SetTypeFromStoreScrape(result);
         }
 
+
+        /// <summary>
+        ///     Scrapes the HowLongToBeat site in the specified language.
+        /// </summary>
+        public void ScrapeHLTB()
+        {
+            HowLongToBeatEntry result = ScrapeHLTBHelper();
+            if(result.Id != "0")
+            {
+                HLTBId = Convert.ToInt32(result.Id);
+                HltbCompletionists = result.GameplayCompletionist;
+                HltbExtras = result.GameplayMainExtra;
+                HltbMain = result.GameplayMain;
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -733,7 +762,7 @@ namespace Depressurizer.Core.Models
                 int count = 0;
                 while (resp.StatusCode == HttpStatusCode.Found && count < MaxFollowAttempts)
                 {
-                    resp.Close();
+                    //resp.Close();
                     if (Regexes.IsSteamStore.IsMatch(resp.Headers[HttpResponseHeader.Location]))
                     {
                         Logger.Warn("Scraping {0}: Location header points to the Steam Store homepage, aborting scraping.", AppId);
@@ -809,26 +838,26 @@ namespace Depressurizer.Core.Models
             catch (UriFormatException e)
             {
                 Logger.Warn("Scraping {0}: Caught an UriFormatException most likely something on Steam side is wrong; {1}.", AppId, e);
-                resp?.Dispose();
+                //resp?.Dispose();
                 return AppType.Unknown;
             }
             catch (WebException e) when (e.Status == WebExceptionStatus.Timeout)
             {
                 Logger.Warn("Scraping {0}: Exception thrown while reading page - operation timed out (page no longer exists or internet connection interrupted?); {1}.", AppId, e);
-                resp?.Dispose();
+                //resp?.Dispose();
                 return AppType.Unknown;
             }
             catch (WebException e)
             {
                 Logger.Warn("Scraping {0}: Exception thrown while reading page - {1}.", AppId, e);
-                resp?.Dispose();
+                //resp?.Dispose();
                 return AppType.Unknown;
             }
             catch (Exception e)
             {
                 Logger.Warn("Scraping {0}: Exception thrown while reading page; {1}.", AppId, e);
 
-                resp?.Dispose();
+                //resp?.Dispose();
 
                 throw;
             }
@@ -859,7 +888,7 @@ namespace Depressurizer.Core.Models
             }
             finally
             {
-                resp.Dispose();
+                //resp.Dispose();
                 responseStream?.Dispose();
             }
 
@@ -919,6 +948,54 @@ namespace Depressurizer.Core.Models
             {
                 AppType = typeFromStore;
             }
+        }
+
+        private static HttpWebRequest GetHLTBRequest(string url)
+        {
+            HttpWebRequest req = WebRequest.CreateHttp(url);
+            req.Timeout = 10_000;
+            return req;
+        }
+
+        private HowLongToBeatEntry ScrapeHLTBHelper()
+        {
+            Logger.Verbose("Scraping {0}: Initiating scraping of the HLTB.", AppId);
+
+            var service = new HowLongToBeatService();
+            HowLongToBeatEntry result = new HowLongToBeatEntry("0");
+
+            if(HLTBId != 0)
+            {
+                result = service.Detail(HLTBId.ToString()).GetAwaiter().GetResult();
+            }
+            else
+            {
+                var possibleGameMatches = service.Search(RemoveSpecialCharacters(Name)).GetAwaiter().GetResult();
+
+                if(possibleGameMatches.Count > 0)
+                {
+                    result = possibleGameMatches[0];
+                }
+            }
+
+            return result;
+        }
+
+        private string RemoveSpecialCharacters(string str)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in str)
+            {
+                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+                {
+                    sb.Append(c);
+                }
+                else
+                {
+                    sb.Append(' ');
+                }
+            }
+            return sb.ToString();
         }
 
         #endregion

@@ -14,6 +14,8 @@
 
         HasAppInfo = 5,
 
-        Parent = 6
+        Parent = 6,
+        
+        HLTBId = 7
     }
 }

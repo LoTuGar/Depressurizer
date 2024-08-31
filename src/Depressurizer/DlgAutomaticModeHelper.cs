@@ -2,7 +2,6 @@
 using System.Text;
 using System.Windows.Forms;
 using Depressurizer.AutoCats;
-using IWshRuntimeLibrary;
 
 namespace Depressurizer
 {
@@ -62,12 +61,12 @@ namespace Depressurizer
                 return;
             }
 
-            WshShell shell = new WshShell();
-            IWshShortcut shortcut = (IWshShortcut) shell.CreateShortcut(dialog.FileName);
-            shortcut.TargetPath = Application.ExecutablePath;
-            shortcut.WorkingDirectory = Application.StartupPath;
-            shortcut.Arguments = GenerateArguments();
-            shortcut.Save();
+            // WshShell shell = new WshShell();
+            // IWshShortcut shortcut = (IWshShortcut) shell.CreateShortcut(dialog.FileName);
+            // shortcut.TargetPath = Application.ExecutablePath;
+            // shortcut.WorkingDirectory = Application.StartupPath;
+            // shortcut.Arguments = GenerateArguments();
+            // shortcut.Save();
         }
 
         private void DlgAutomaticModeHelper_Load(object sender, EventArgs e)

@@ -39,7 +39,7 @@ namespace Depressurizer
 
         protected override void RunProcess()
         {
-            Updated = Database.UpdateFromHLTB(Settings.Instance.IncludeImputedTimes);
+            //Updated = Database.UpdateFromHLTB(Settings.Instance.IncludeImputedTimes);
             OnThreadCompletion();
         }
 

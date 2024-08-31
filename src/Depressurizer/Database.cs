@@ -747,70 +747,22 @@ namespace Depressurizer
             return updated;
         }
 
-        public int UpdateFromHLTB(bool includeImputedTimes)
+        public int UpdateFromHLTB(int appId, HowLongToBeatEntry hltbInfo)
         {
             int updated = 0;
 
-            using (WebClient client = new WebClient())
+            if (Contains(appId, out DatabaseEntry entry))
             {
-                client.Encoding = Encoding.UTF8;
-                string result = client.DownloadString(Constants.HowLongToBeat);
+            entry.HltbMain = hltbInfo.GameplayMain;
 
-                if (result.Contains("An error has occurred."))
-                {
-                    return updated;
-                }
+            entry.HltbExtras = hltbInfo.GameplayMainExtra;
 
-                HLTB_RawData rawData = JsonConvert.DeserializeObject<HLTB_RawData>(result);
+            entry.HltbCompletionists = hltbInfo.GameplayCompletionist;
 
-                if (rawData == null)
-                {
-                    return updated;
-                }
-
-                foreach (Game game in rawData.Games)
-                {
-                    SteamAppData steamAppData = game.SteamAppData;
-                    int id = steamAppData.SteamAppId;
-                    if (!Contains(id, out DatabaseEntry entry))
-                    {
-                        continue;
-                    }
-
-                    HltbInfo info = steamAppData.HltbInfo;
-
-                    if (!includeImputedTimes && info.MainTtbImputed)
-                    {
-                        entry.HltbMain = 0;
-                    }
-                    else
-                    {
-                        entry.HltbMain = info.MainTtb;
-                    }
-
-                    if (!includeImputedTimes && info.ExtrasTtbImputed)
-                    {
-                        entry.HltbExtras = 0;
-                    }
-                    else
-                    {
-                        entry.HltbExtras = info.ExtrasTtb;
-                    }
-
-                    if (!includeImputedTimes && info.CompletionistTtbImputed)
-                    {
-                        entry.HltbCompletionists = 0;
-                    }
-                    else
-                    {
-                        entry.HltbCompletionists = info.CompletionistTtb;
-                    }
-
-                    updated++;
-                }
-            }
+            updated++;
 
             LastHLTBUpdate = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            }
 
             return updated;
         }

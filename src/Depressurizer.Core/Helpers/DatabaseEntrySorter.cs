@@ -99,6 +99,9 @@ namespace Depressurizer.Core.Helpers
                 case SortModes.Parent:
                     res = x.ParentId.CompareTo(y.ParentId);
                     break;
+                case SortModes.HLTBId:
+                    res = x.HLTBId.CompareTo(y.HLTBId);
+                    break;
             }
 
             return SortDirection * res;

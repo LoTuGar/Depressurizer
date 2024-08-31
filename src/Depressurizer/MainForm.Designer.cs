@@ -120,6 +120,7 @@ namespace Depressurizer {
             this.colLanguageFullAudio = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.colHoursPlayed = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.colDataAvailable = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.colHLTBID = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.colFiller = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.contextGame = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.contextGame_LaunchGame = new System.Windows.Forms.ToolStripMenuItem();
@@ -706,6 +707,7 @@ namespace Depressurizer {
             this.lstGames.AllColumns.Add(this.colLanguageFullAudio);
             this.lstGames.AllColumns.Add(this.colHoursPlayed);
             this.lstGames.AllColumns.Add(this.colDataAvailable);
+            this.lstGames.AllColumns.Add(this.colHLTBID);
             this.lstGames.AllColumns.Add(this.colFiller);
             this.lstGames.AllowColumnReorder = true;
             this.lstGames.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(44)))));
@@ -965,6 +967,15 @@ namespace Depressurizer {
             resources.ApplyResources(this.colDataAvailable, "colDataAvailable");
             this.colDataAvailable.IsVisible = false;
             this.colDataAvailable.Tag = "colDataAvailable";
+            // 
+            // colHLTBID
+            // 
+            this.colHltbExtras.AspectName = "";
+            resources.ApplyResources(this.colHLTBID, "colHLTBID");
+            this.colHltbExtras.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.colHltbExtras.IsVisible = false;
+            this.colHltbExtras.Tag = "colHLTBID";
+            this.colHltbExtras.UseFiltering = false;
             // 
             // colFiller
             // 
@@ -1799,6 +1810,7 @@ namespace Depressurizer {
         private ToolStripMenuItem contextGame_VisitSteamCommunity;
         private ToolStripMenuItem randomGameSelectionToolStripMenuItem;
         private BrightIdeasSoftware.OLVColumn colDataAvailable;
+        private BrightIdeasSoftware.OLVColumn colHLTBID;
     }
 }
 

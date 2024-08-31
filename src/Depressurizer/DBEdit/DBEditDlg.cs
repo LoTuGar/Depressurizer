@@ -40,6 +40,9 @@ namespace Depressurizer
             },
             {
                 6, SortModes.Parent
+            },
+            {
+                7, SortModes.HLTBId
             }
         };
 
@@ -78,7 +81,7 @@ namespace Depressurizer
 
         private static Database Database => Database.Instance;
 
-        private static int FilterMaxId => 1000000;
+        private static int FilterMaxId => 9999999;
 
         private static Logger Logger => Logger.Instance;
 
@@ -92,16 +95,17 @@ namespace Depressurizer
 
         private static ListViewItem CreateListViewItem(DatabaseEntry entry)
         {
-            return new ListViewItem(new[]
-            {
+            return new ListViewItem(
+            [
                 entry.AppId.ToString(CultureInfo.CurrentCulture),
                 entry.Name,
                 entry.Genres != null ? string.Join(",", entry.Genres) : "",
                 entry.AppType.ToString(),
                 entry.LastStoreScrape == 0 ? "" : "X",
                 entry.LastAppInfoUpdate == 0 ? "" : "X",
-                entry.ParentId <= 0 ? "" : entry.ParentId.ToString(CultureInfo.CurrentCulture)
-            });
+                entry.ParentId <= 0 ? "" : entry.ParentId.ToString(CultureInfo.CurrentCulture),
+                entry.HLTBId.ToString(CultureInfo.CurrentCulture)
+            ]);
         }
 
         /// <summary>
@@ -838,6 +842,47 @@ namespace Depressurizer
             }
         }
 
+        private void ScrapeHLTBGames(ICollection<DatabaseEntry> scrapeJobs)
+        {
+            if (scrapeJobs.Count <= 0)
+            {
+                AddStatusMsg(GlobalStrings.DBEditDlg_NoGamesToScrape);
+                return;
+            }
+
+            using (ScrapeDialogHLTB dialog = new ScrapeDialogHLTB(scrapeJobs))
+            {
+                DialogResult result = dialog.ShowDialog();
+
+                if (dialog.Error != null)
+                {
+                    AddStatusMsg(GlobalStrings.DBEditDlg_ErrorUpdatingGames);
+                    MessageBox.Show(string.Format(CultureInfo.CurrentCulture, GlobalStrings.DBEditDlg_ErrorWhileUpdatingGames, dialog.Error.Message), GlobalStrings.DBEditDlg_Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                switch (result)
+                {
+                    case DialogResult.Cancel:
+                        AddStatusMsg(GlobalStrings.DBEditDlg_UpdateCanceled);
+                        break;
+                    case DialogResult.Abort:
+                        AddStatusMsg(string.Format(CultureInfo.CurrentCulture, GlobalStrings.DBEditDlg_AbortedUpdate, dialog.JobsCompleted, dialog.TotalJobs));
+                        break;
+                    default:
+                        AddStatusMsg(string.Format(CultureInfo.CurrentCulture, GlobalStrings.DBEditDlg_UpdatedEntries, dialog.JobsCompleted));
+                        break;
+                }
+
+                if (dialog.JobsCompleted <= 0)
+                {
+                    return;
+                }
+
+                UnsavedChanges = true;
+                RebuildDisplayList();
+            }
+        }
+
         /// <summary>
         ///     Performs a web scrape on all games without a last scrape date set.
         /// </summary>
@@ -1020,34 +1065,27 @@ namespace Depressurizer
 
         private void UpdateFromHltb()
         {
-            Cursor = Cursors.WaitCursor;
-
-            using (HltbPrcDlg dialog = new HltbPrcDlg())
+            if (lstGames.SelectedIndices.Count <= 0)
             {
-                DialogResult result = dialog.ShowDialog();
-
-                if (dialog.Error != null)
-                {
-                    MessageBox.Show(string.Format(CultureInfo.CurrentCulture, GlobalStrings.DBEditDlg_ErrorWhileUpdatingHltb, dialog.Error.Message), GlobalStrings.DBEditDlg_Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Logger.Error(GlobalStrings.DBEditDlg_Log_ExceptionHltb, dialog.Error.Message);
-                    AddStatusMsg(GlobalStrings.DBEditDlg_ErrorUpdatingHltb);
-                }
-                else
-                {
-                    if (result == DialogResult.Cancel || result == DialogResult.Abort)
-                    {
-                        AddStatusMsg(GlobalStrings.DBEditDlg_CanceledHltbUpdate);
-                    }
-                    else
-                    {
-                        AddStatusMsg(string.Format(CultureInfo.CurrentCulture, GlobalStrings.DBEditDlg_Status_UpdatedHltb, dialog.Updated));
-                        UnsavedChanges = true;
-                    }
-                }
+                return;
             }
 
-            RebuildDisplayList();
-            Cursor = Cursors.Default;
+            Cursor = Cursors.WaitCursor;
+
+            List<DatabaseEntry> selectedGames = new List<DatabaseEntry>();
+            foreach (int index in lstGames.SelectedIndices)
+            {
+                selectedGames.Add(_displayedGames[index]);
+            }
+
+            try
+            {
+                ScrapeHLTBGames(selectedGames);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
 
         /// <summary>

@@ -146,6 +146,7 @@ namespace Depressurizer
 
                 dateWeb.Value = DateTimeOffset.FromUnixTimeSeconds(Math.Max(0, Game.LastStoreScrape)).DateTime;
                 dateAppInfo.Value = DateTimeOffset.FromUnixTimeSeconds(Math.Max(0, Game.LastAppInfoUpdate)).DateTime;
+                txtHLTBId.Text = Game.HLTBId.ToString(CultureInfo.CurrentCulture);
             }
         }
 
@@ -181,6 +182,7 @@ namespace Depressurizer
             Game.HltbMain = (int) numHltbMain.Value;
             Game.HltbExtras = (int) numHltbExtras.Value;
             Game.HltbCompletionists = (int) numHltbCompletionist.Value;
+            Game.HLTBId = Convert.ToInt32(txtHLTBId.Text);
 
             Game.MetacriticUrl = txtMCName.Text;
             Game.SteamReleaseDate = txtRelease.Text;

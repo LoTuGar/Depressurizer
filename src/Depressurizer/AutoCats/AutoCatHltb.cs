@@ -156,9 +156,9 @@ namespace Depressurizer.AutoCats
 
             string result = null;
 
-            float hltbMain = entry.HltbMain / 60.0f;
-            float hltbExtras = entry.HltbExtras / 60.0f;
-            float hltbCompletionist = entry.HltbCompletionists / 60.0f;
+            float hltbMain = entry.HltbMain;
+            float hltbExtras = entry.HltbExtras;
+            float hltbCompletionist = entry.HltbCompletionists;
 
             if (IncludeUnknown && hltbMain == 0.0f && hltbExtras == 0.0f && hltbCompletionist == 0.0f)
             {

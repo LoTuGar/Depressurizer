@@ -1265,6 +1265,15 @@
   <data name="colDataAvailable.Text" xml:space="preserve">
     <value>Data Available</value>
   </data>
+  <data name="colHLTBID.Text" xml:space="preserve">
+    <value>HLTB ID</value>
+  </data>
+  <data name="colHLTBID.ToolTipText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="colHLTBID.Width" type="System.Int32, mscorlib">
+    <value>120</value>
+  </data>
   <data name="colFiller.Text" xml:space="preserve">
     <value>FILLER</value>
   </data>

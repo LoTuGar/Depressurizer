@@ -1904,10 +1904,10 @@ namespace Depressurizer
             }
 
             const int aWeekInSecs = 7 * 24 * 60 * 60;
-            if (Settings.UpdateHltbOnStart && DateTimeOffset.UtcNow.ToUnixTimeSeconds() > Database.LastHLTBUpdate + aWeekInSecs)
-            {
-                UpdateDatabaseFromHLTB();
-            }
+            // if (Settings.UpdateHltbOnStart && DateTimeOffset.UtcNow.ToUnixTimeSeconds() > Database.LastHLTBUpdate + aWeekInSecs)
+            // {
+            //     UpdateDatabaseFromHLTB();
+            // }
 
             switch (Settings.StartupAction)
             {
@@ -2520,41 +2520,8 @@ namespace Depressurizer
                     return "-";
                 }
 
-                if (time < 60)
-                {
-                    return time + "m";
-                }
+                return time + "h";
 
-                int hours = time / 60;
-                int mins = time % 60;
-                if (mins == 0)
-                {
-                    return hours + "h";
-                }
-
-                return hours + "h " + mins + "m";
-            };
-            colHltbMain.AspectToStringConverter = delegate(object obj)
-            {
-                int time = (int) obj;
-                if (time <= 0)
-                {
-                    return "-";
-                }
-
-                if (time < 60)
-                {
-                    return time + "m";
-                }
-
-                int hours = time / 60;
-                int mins = time % 60;
-                if (mins == 0)
-                {
-                    return hours + "h";
-                }
-
-                return hours + "h " + mins + "m";
             };
             colDataAvailable.AspectGetter = delegate (object g)
             {
@@ -2565,14 +2532,24 @@ namespace Depressurizer
 
                 return !(gameInfo.Id > 0 && (!Database.Contains(gameInfo.Id, out DatabaseEntry entry) || entry.LastStoreScrape == 0));
             };
+            colHltbMain.AspectToStringConverter = hltb;
             colHltbExtras.AspectToStringConverter = hltb;
             colHltbCompletionist.AspectToStringConverter = hltb;
             colLastPlayed.AspectToStringConverter = delegate(object obj)
             {
                 DateTime lastPlayed = (DateTime) obj;
-                Thread threadForCulture = new Thread(delegate() { });
-                string format = threadForCulture.CurrentCulture.DateTimeFormat.ShortDatePattern;
+                //Thread threadForCulture = new Thread(delegate() { });
+                string format = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
                 return lastPlayed == DateTime.MinValue ? null : lastPlayed.ToString(format, CultureInfo.CurrentCulture);
+            };
+            colHLTBID.AspectGetter = delegate(object g)
+            {
+                if (g == null || !(g is GameInfo gameInfo))
+                {
+                    return 0;
+                }
+
+                return Database.Contains(gameInfo.Id, out DatabaseEntry entry) ? entry.HLTBId : 0;
             };
 
             //Filtering
