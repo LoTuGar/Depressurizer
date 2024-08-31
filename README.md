@@ -1,11 +1,12 @@
 # Depressurizer
+<!--
 [![Github All Releases](https://img.shields.io/github/downloads/Depressurizer/Depressurizer/total.svg?style=flat-square)](https://github.com/LoTuGar/Depressurizer/releases/latest)
 [![GitHub stars](https://img.shields.io/github/stars/Depressurizer/Depressurizer.svg?style=flat-square)](https://github.com/LoTuGar/Depressurizer/stargazers)
 [![GitHub contributors](https://img.shields.io/github/contributors/Depressurizer/Depressurizer.svg?style=flat-square)](https://github.com/LoTuGar/Depressurizer/graphs/contributors)
 [![GitHub issues](https://img.shields.io/github/issues/Depressurizer/Depressurizer.svg?style=flat-square)](https://github.com/LoTuGar/Depressurizer/issues)
-[![GitHub license](https://img.shields.io/github/license/Depressurizer/Depressurizer.svg?style=flat-square)](https://github.com/LoTuGar/Depressurizer/blob/dev/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/Depressurizer/Depressurizer.svg?style=flat-square)](https://github.com/LoTuGar/Depressurizer/blob/master/LICENSE)
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/Depressurizer/Depressurizer/.NET%20Core%20Desktop/master?style=flat-square)
-
+-->
 <sup>This is a continuation of [rallion](https://github.com/rallion)'s [Depressurizer](https://github.com/rallion/depressurizer).</sup>
 
 # Summary
@@ -59,6 +60,7 @@ To resolve issues such as #194 (Internal server error due to scraping speed) and
 * The API is subject to fair usage, you can use it outside Depressurizer;
 * Improved data for removed games / software / apps.
 
+<!--
 ### Configuration
 * Include your [steamID64](https://steamid.io/) in your GitHub profile description for verification.
 * Send an email to [LoTuGar](mailto:depressurizer@martijnvegter.com) containing your:
@@ -66,6 +68,7 @@ To resolve issues such as #194 (Internal server error due to scraping speed) and
     * Steam Web API Key
     * GitHub username
 * Open Depressurizer and go to `Tools` -> `Settings` -> `Premium` and enter the value you receive on your initial email.
+-->
 
 ## Manual categorization
 
